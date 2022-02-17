@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet' />
+    <title>Mapbox example</title>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript">
+      // [Perry] Enter your mapbox gl access token on the line below
+      mapboxgl.accessToken = 'pk.eyJ1IjoibGl1eHVuODAxIiwiYSI6ImNqd2lheHc4dTAxaW00YW1tdHl6cG82d3EifQ.mboz0D3eklR15-Z0rtrFZA'
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v9',
+        center: [7.0982, 50.7374],
+        zoom: 11
+      });
+
+      var nav = new mapboxgl.NavigationControl();
+      map.addControl(nav, 'top-right');
+
+      map.on('load', function () {
+        map.addSource('bonn', {
+          'type': 'vector',
+          "tiles": ["http://localhost:8080/maps/bonn/{z}/{x}/{y}.vector.pbf?"],
+          "tolerance": 0
+        });
+
+        map.addLayer({
+          // [Perry] You could try with main_roads or lakes for id and source-layer
+          "id": "road",
+          "source": "bonn",
+          "source-layer": "road",
+          "type": "line",
+          "paint": {
+            "line-color": "#FF0000",
+            "line-width": 1
+          }
+        });
+      });
+
+
+    </script>
+  </body>
+</html>
